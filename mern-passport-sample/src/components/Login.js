@@ -8,8 +8,8 @@ export default class Login extends Component{
         super(); 
 
         this.state ={
-            email: "",
-            password:"",
+            username: '',
+            password:'',
             redirectTo: null
 
         };
@@ -22,14 +22,14 @@ export default class Login extends Component{
     //     return this.state.email.length > 0 && this.state.password.length > 0;
 
     // }
-    handleChange(e){
+    handleChange(event){
         this.setState({
-            [e.target.name]: e.target.value
+            [event.target.name]: event.target.value
         });
     }
 
-    handleSubmit(e){
-        e.preventDefault(); 
+    handleSubmit(event){
+        event.preventDefault(); 
         console.log('handleSubmit');
     
 

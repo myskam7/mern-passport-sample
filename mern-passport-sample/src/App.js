@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { Route, Link } from 'react-router-dom'
 // components
-import Signup from './components/SignUp'
-import LoginForm from './components/Login'
-// import Navbar from './components/navbar'
-// import Home from './components/home'
+import Signup from './components/sign-up'
+import LoginForm from './components/login'
+import Nav from './components/nav'
+import Home from './components/homepage'
 
 class App extends Component {
   constructor() {
@@ -24,7 +24,7 @@ class App extends Component {
     this.getUser()
   }
 
-  updateUser (userObject) {
+  updateUser(userObject) {
     this.setState(userObject)
   }
 
@@ -53,13 +53,16 @@ class App extends Component {
     return (
       <div className="App">
    
-       
+      <Nav updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
         {/* greet user if logged in: */}
         {this.state.loggedIn &&
           <p>Join the party, {this.state.username}!</p>
         }
         {/* Routes to different components */}
-        
+        <Route 
+        exact path="/"
+        component={Home}
+          />
         <Route
           path="/login"
           render={() =>

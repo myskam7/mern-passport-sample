@@ -9,7 +9,7 @@ export default class SignUp extends Component {
       username: '',
       password: '',
       confirmPassword: ''
-    };
+    }
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -22,18 +22,19 @@ export default class SignUp extends Component {
   }
 
   handleSubmit(e){
+    e.preventDefault();
      console.log('sign-up(handleSubmit) username ', this.state.username);
-     e.preventDefault();
+     
 
      //request to server to add a new username/password
      axios.post('/user/', {
          username: this.state.username,
          password: this.state.password
      })
-     .then(res => {
-         console.log(res);
-         if(!res.data.errmsg){
-             console.log('sign-up success');
+     .then(response => {
+         console.log(response)
+         if(!response.data.errmsg){
+             console.log('sign-up success')
 
              //redirect to login page
              this.setState({

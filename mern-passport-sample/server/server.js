@@ -35,8 +35,8 @@ app.use(
     )
 
     //passport
-    app.use(passport.initialize());
-    app.use(passport.session());//calls the user
+    app.use(passport.initialize()) 
+    app.use(passport.session()) //calls the user
     
 
 

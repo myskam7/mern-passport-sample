@@ -1,7 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const User = require('../database/models/user')
-const passport = require('../passport')
+const express = require('express');
+const User = require('../database/models/user');
+const passport = require('../passport');
+
+const router = express.Router();
 
 router.post('/', (req, res) => {
     console.log('user signup');
@@ -29,9 +30,10 @@ router.post('/', (req, res) => {
     })
 })
 
+
 router.post(
     '/login',
-    function (req, res, next) {
+     (req, res, next) => {
         console.log('routes/user.js, login, req.body: ');
         console.log(req.body)
         next()
@@ -47,7 +49,7 @@ router.post(
 )
 
 router.get('/', (req, res, next) => {
-    console.log('===== user!!======')
+    console.log('user!')
     console.log(req.user)
     if (req.user) {
         res.json({ user: req.user })
