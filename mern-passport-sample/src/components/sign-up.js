@@ -14,17 +14,24 @@ export default class SignUp extends Component {
   constructor() {
     super();
 
-    this.state ={      //Setting current state
+    this.state ={  
+          //Setting current state
       username: '',
       password: '',
-      LoginPage: null
+      passwordMatch: '',
+      Errors: null,
+      LoginPage: null,
+      RegSuccess: null
     }
 
 
     // Its required to bind these below in order to have 'this' work in the callback
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    // this.passwordMatch = this.passwordMatch.bind(this);
+    
   }
+   
 //responsible for handling changes made in the form and will update state
   handleChange(e){
       this.setState({
@@ -35,14 +42,19 @@ export default class SignUp extends Component {
 //reponsible for handling the click on 'Submit' button event 
   handleSubmit(e){
     e.preventDefault()
-    // this.setState({
-    //     LoginPage: '/'
-    //  })
+
      console.log('sign-up(handleSubmit) username ', this.state.username);
-     
+     if(!(this.state.password === this.state.passwordMatch)){
+          this.setState({
+             Errors: 'Password Does Not Match'
+         })
+         return console.log('passwords do not match');
+
+     } else {
 
      //request to server to add a new username/password to database
      axios.post('/user/', {
+         
          username: this.state.username,
          password: this.state.password
      })
@@ -51,9 +63,10 @@ export default class SignUp extends Component {
          if(res.data._id){
               //update the state and redirect to login page
             this.setState({
+                RegSuccess: 'Registration successful',
                 LoginPage: '/login'
              })
-             console.log('sign-up success')
+             alert(this.state.RegSuccess)
                  
          } else { 
 
@@ -62,25 +75,21 @@ export default class SignUp extends Component {
          console.log('error signing up');
          console.log(error);
      })
-    //  this.setState({
-    //     LoginPage: '/'
-    //  })
   }
+}
 
   render() {
-    //   if(this.state.LoginPage === true) {
-    //       <Redirect to='/' />
-    //   }
    
         
             if(this.state.LoginPage){
-                return <Redirect to={this.state.LoginPage} />
+                return <Redirect to={this.state.LoginPage}></Redirect>
+                
             } else {
             
             return( //here is what will be displayed to the user
         <div className="SignupForm">
         <h4>Sign up</h4>
-        <form className="form-horizontal">
+        <form className="form-horizontal" onSubmit={this.handleSubmit}>
             <div className="form-group">
                 <div className="col-1 col-ml-auto">
                     <label className="form-label" htmlFor="username">Username</label>
@@ -94,6 +103,7 @@ export default class SignUp extends Component {
                         value={this.state.username}
                         onChange={this.handleChange}
                     />
+                    
                 </div>
             </div>
             <div className="form-group">
@@ -108,6 +118,24 @@ export default class SignUp extends Component {
                         value={this.state.password}
                         onChange={this.handleChange}
                     />
+                    
+                </div>
+                
+            </div>
+            
+            <div className="form-group">
+                <div className="col-1 col-ml-auto">
+                    <label className="form-label" htmlFor="passwordMatch">Re-Enter Password: </label>
+                </div>
+                <div className="col-3 col-mr-auto">
+                    <input className="form-input"
+                        placeholder="Re-Enter Password"
+                        type="password"
+                        name="passwordMatch"
+                        value={this.state.passwordMatch}
+                        onChange={this.handleChange}
+                    />
+                    <span style={{ color: 'red' }}>{this.state.Errors}</span>
                 </div>
             </div>
             <div className="form-group ">
@@ -117,6 +145,7 @@ export default class SignUp extends Component {
                     onClick={this.handleSubmit}
                     type="submit"
                 >Submit</button>
+
             </div>
         </form>
     </div>
@@ -124,5 +153,5 @@ export default class SignUp extends Component {
   }
 
 };
-}
+};
 

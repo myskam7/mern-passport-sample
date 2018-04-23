@@ -27,10 +27,7 @@ export default class Login extends Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
-    // validateForm() {
-    //     return this.state.email.length > 0 && this.state.password.length > 0;
-
-    // }
+    
 
     
     handleChange(event){   //responsible for handling changes made in the form regarding if strings are added
