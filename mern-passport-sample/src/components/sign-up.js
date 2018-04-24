@@ -82,7 +82,7 @@ export default class SignUp extends Component {
    
         
             if(this.state.LoginPage){
-                return <Redirect to={this.state.LoginPage}></Redirect>
+                return( <Redirect to={this.state.LoginPage}></Redirect>)
                 
             } else {
             

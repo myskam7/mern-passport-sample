@@ -1,8 +1,23 @@
 const express = require('express');
 const User = require('../database/models/user');
-const passport = require('../passport');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+
+
+
+
+
+// require('../passport/localStrategy');
+
+
+
 
 const router = express.Router();
+
+// /* GET user profile. */
+router.get('/', function(req, res, next) {
+    res.send(req.user);
+});
 
 router.post('/', (req, res) => {
     console.log('user signup');
@@ -31,22 +46,43 @@ router.post('/', (req, res) => {
 })
 
 
-router.post(
-    '/login',
-     (req, res, next) => {
-        console.log('routes/user.js, login, req.body: ');
+router.post('/login', (req, res, next) => {
+        // console.log('routes/user.js, login, req.body: ');
         console.log(req.body)
-        next()
-    },
-    passport.authenticate('local'),
-    (req, res) => {
-        console.log('logged in', req.user);
-        var userInfo = {
-            username: req.user.username
-        };
-        res.send(userInfo);
-    }
-)
+
+        // next()
+    // },
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+        console.log(info);
+        if (err || !user){
+            return res.status(400).json({
+                message : 'Something went wrong',
+                user    :  user
+
+
+            });
+            
+        }
+
+        req.login(user, { session: false }, (err) => {
+            if(err){
+                res.send(err);
+            }
+            const token = jwt.sign(user.toJSON(), 'your_jwt_secret');
+            return res.json({user, token});
+        })
+         
+       
+    })(req, res)
+    // (req, res) => {
+    //     console.log('logged in', req.user);
+    //     var userInfo = {
+    //         username: req.user.username
+    //     };
+    //     res.send(userInfo);
+    // }
+}); 
+
 
 router.get('/', (req, res, next) => {
     console.log('user!')

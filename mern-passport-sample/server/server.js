@@ -3,14 +3,21 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-
 const dbConnection = require('./database') 
-const passport = require('./passport');
+const passport = require('passport');
 
-const app = express()
+
+
+
 
 // Route requires
-const user = require('./routes/user')
+const user = require('./routes/user');
+const auth = require('./routes/auth');
+
+require('./passport/index');
+
+
+const app = express()
 
 const PORT = 8080;
 
@@ -26,7 +33,7 @@ app.use(bodyParser.json())
 //Sessions
 app.use(
     session({
-        secret: 'balloonz', 
+        secret: 'fsad7f9sdf97safa98', 
         store: new MongoStore({ mongooseConnection: dbConnection }),
         resave: false,
         saveUninitialized: false 
@@ -37,11 +44,14 @@ app.use(
     //passport
     app.use(passport.initialize()) 
     app.use(passport.session()) //calls the user
-    
+    // app.use('/', index)
 
 
-    //routes
     app.use('/user', user)
+    app.use('/auth', passport.authenticate('jwt', {session: false}), user);
+    
+    //routes
+    
 
     //starts the server
     app.listen(PORT, () => {
