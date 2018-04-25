@@ -1,13 +1,7 @@
 const express = require('express');
 const User = require('../database/models/user');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
-
-
-
-
-
-// require('../passport/localStrategy');
+const passport = require('passport');q 
 
 
 
